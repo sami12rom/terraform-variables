@@ -17,7 +17,7 @@ variable glue_job_description {
 
 variable glue_job_role_arn {
     type    = string
-    default = "arn:aws:iam::149072226401:role/INL-GLUE-WORKER-ROLE"
+    default = "arn:aws:iam::-:role/-"
 }
 
 variable glue_job_max_concurrent_runs {
