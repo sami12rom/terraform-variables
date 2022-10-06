@@ -1,0 +1,19 @@
+image: ${ECR_REPO}/gitlab-runner-py3:latest
+
+stages:
+    - deploy
+
+deploy:
+  stage: deploy
+  environment: inl-dev
+  variables:
+    DEPLOY_ENVIRONMENT: tst
+    TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/${CI_PROJECT_NAME}-${DEPLOY_ENVIRONMENT}
+    TF_ROOT: ${CI_PROJECT_DIR}/terraform
+    RUNNER: '/opt/aws/run-on-dev.sh'
+  script:
+    - cd ${TF_ROOT}
+    - ${RUNNER} terraform init
+    - ${RUNNER} terraform validate
+    - ${RUNNER} terraform plan -var-file="input.tfvars"
+    - ${RUNNER} terraform apply -var-file="input.tfvars" -auto-approve
